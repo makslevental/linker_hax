@@ -1,0 +1,32 @@
+name: ubuntu-clang-mold
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install linker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mold
+
+      - name: Build and run
+        run: |
+          cmake . \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_EXE_LINKER_FLAGS_INIT="-fuse-ld=mold"
+          
+          cmake --build . --verbose && ./linker_hax
