@@ -1,3 +1,5 @@
 #include "section.h"
 
-static int y __attribute__((used, section(MY_SECTION))) = 10;
+static test y SECTION_ATTRIBUTE(struct_section) = {.a = 2, .b = 'b'};
+
+static int yy SECTION_ATTRIBUTE(int_section) = 10;
